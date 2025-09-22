@@ -1,7 +1,13 @@
 from typing import Callable
 from .operations import Calculator, CalculatorError, DivisionByZeroError
 
-PROMPT = "> "  # pragma: no cover
+PROMPT = "> "
+
+def banner() -> str:
+    return "Calculator REPL. Commands: add|sub|mul|div <a> <b>  | exit"
+
+def bye() -> str:
+    return "Bye!"
 
 def _parse_two_numbers(parts: list[str]) -> tuple[float, float]:
     if len(parts) != 3:
@@ -18,18 +24,19 @@ def run_repl(
     input_fn: Callable[[str], str] = input,
     output_fn: Callable[[str], None] = print,
 ) -> None:
-    output_fn("Calculator REPL. Commands: add|sub|mul|div <a> <b>  | exit")
+    # banner (covered by direct call + run path)
+    output_fn(banner())
     while True:
         try:
             line = input_fn(PROMPT).strip()
         except (EOFError, KeyboardInterrupt):
-            output_fn("Bye!")
+            output_fn(bye())
             break
 
         if not line:
             continue
         if line.lower() in {"exit", "quit", "q"}:
-            output_fn("Bye!")  # pragma: no cover
+            output_fn(bye())
             break
 
         parts = line.split()
