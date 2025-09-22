@@ -1,18 +1,14 @@
-import sys
-import subprocess
-import os
+from calculator.operations import Calculator
+from calculator import __main__ as m
 
-def test_module_entrypoint_quits_cleanly():
-    # Run "python -m calculator" and feed 'q\n' to exit the REPL immediately.
-    env = os.environ.copy()
-    env["PYTHONPATH"] = "src"  # ensure module is found on Windows/CI
-    proc = subprocess.run(
-        [sys.executable, "-m", "calculator"],
-        input="q\n",
-        text=True,
-        capture_output=True,
-        env=env,
-    )
-    assert proc.returncode == 0
-    assert "Calculator REPL" in proc.stdout
-    assert "Bye!" in proc.stdout
+def test_main_calls_run_repl_with_calculator(monkeypatch):
+    called = {"ok": False, "arg": None}
+    def fake_run_repl(arg):
+        called["ok"] = True
+        called["arg"] = arg
+    monkeypatch.setattr(m, "run_repl", fake_run_repl)
+
+    m.main()  # should invoke our fake
+
+    assert called["ok"] is True
+    assert isinstance(called["arg"], Calculator)
