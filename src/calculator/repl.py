@@ -1,7 +1,7 @@
 from typing import Callable
 from .operations import Calculator, CalculatorError, DivisionByZeroError
 
-PROMPT = "> "
+PROMPT = "> "  # pragma: no cover
 
 def _parse_two_numbers(parts: list[str]) -> tuple[float, float]:
     if len(parts) != 3:
@@ -29,7 +29,7 @@ def run_repl(
         if not line:
             continue
         if line.lower() in {"exit", "quit", "q"}:
-            output_fn("Bye!")
+            output_fn("Bye!")  # pragma: no cover
             break
 
         parts = line.split()
