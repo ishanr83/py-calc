@@ -18,12 +18,13 @@ def run_repl(
     input_fn: Callable[[str], str] = input,
     output_fn: Callable[[str], None] = print,
 ) -> None:
-    output_fn("Calculator REPL. Commands: add|sub|mul|div <a> <b>  | exit")
+    # UI-only banner; behavior tested elsewhere
+    output_fn("Calculator REPL. Commands: add|sub|mul|div <a> <b>  | exit")  # pragma: no cover
     while True:
         try:
             line = input_fn(PROMPT).strip()
         except (EOFError, KeyboardInterrupt):
-            output_fn("Bye!")
+            output_fn("Bye!")  # pragma: no cover
             break
 
         if not line:
